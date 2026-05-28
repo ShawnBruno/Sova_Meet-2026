@@ -1,0 +1,73 @@
+import Head from "next/head";
+import Link from "next/link";
+import MyAppBar from "../components/MyAppBar";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { Box, Grid, ThemeProvider } from "@mui/material";
+import { CustomCard } from "@/styles/mui/customComponents";
+import { lightTheme, darkTheme } from "@/styles/mui/theme";
+import { useState } from "react";
+
+
+
+
+export default function Home() {
+  // State Hook
+
+  const [showMeeting, setShowMeeting] = useState(true);
+
+  const handleMeeting = [
+    {
+      Name: "Start Meeting",
+      Description: "Click the button below to start a new meeting instantly.",
+      Image: "data:image/png;base64,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"
+    },
+    {
+      Name: "Join Meeting",
+      Description: "Enter a meeting code to join an existing meeting.",
+      Image: "https://cdn-icons-png.flaticon.com/512/4456/4456442.png"
+    },
+    {
+      Name: "Schedule Meeting",
+      Description: "Set up a meeting for a future date and time.",
+      Image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_kGBAj9r1WPpruMihS_dzB9F7AVChq8ikbg&s"
+    }
+    
+  ]
+  
+  return (
+    <>
+    <ThemeProvider theme={lightTheme}>
+      <Head>
+        <title>SovaMeet</title>
+        <meta name="description" content="Generated by create next app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      
+        <MyAppBar /><br />
+        <Box height="60px" />
+        <Container maxWidth="lg">
+          <Button onClick={() => setShowMeeting(!showMeeting)}>
+            {showMeeting ? "Hide Meeting" : "Show Meeting"}
+          </Button>
+          <Box height="20px" />
+          <Grid container spacing={4} direction="row" justifyContent="center">
+          {
+            showMeeting && handleMeeting.map((meeting) => (
+              <Grid size={{ lg: 4, md: 4, sm: 6, xs: 12 }}>
+              <CustomCard Name={meeting.Name} Description={meeting.Description} Image={meeting.Image} />
+              </Grid>
+            ))
+          }
+          </Grid>
+        </Container>
+      </ThemeProvider>
+    </>
+  );
+}

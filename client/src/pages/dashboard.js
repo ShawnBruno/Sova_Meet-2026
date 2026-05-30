@@ -25,8 +25,8 @@ export default function Home() {
   const currentTheme = useSelector(selectTheme).activeTheme; // Access the current theme from the Redux store
 
   useEffect(() => {
-    dispatch(getActiveTheme); // to get theme from cookie
-  })
+    dispatch(getActiveTheme()); // to get theme from cookie
+  }, []);
 
   // State Hook
   const [showMeeting, setShowMeeting] = useState(true);

@@ -10,6 +10,8 @@ import axios from "axios"; //npm install axios to make API calls to the backend
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveTheme, selectTheme } from "@/redux/reducers/themeReducer";
 import { useEffect } from "react";
+import { fetchUsers } from "@/redux/reducers/movieReducer";
+import { selectUser } from "@/redux/reducers/movieReducer";
 
 
 export default function Home() {
@@ -17,32 +19,37 @@ export default function Home() {
 
   const currentTheme = useSelector(selectTheme).activeTheme; // Access the current theme from the Redux store
 
+
   useEffect(() => {
-    dispatch(getActiveTheme); // to get theme from cookie
-  })
+    dispatch(getActiveTheme()); // to get theme from cookie
+    dispatch(fetchUsers()); // to fetch users data from the database
+    // fetchUsers(); // to fetch users data from the database
+  }, []);
+
+  const users = useSelector(selectUser); // Access the users data from the Redux store
 
   //STATE HOOKS
-  const [showUsers, setShowUsers] = useState(true);
-  const [users, setUsers] = useState(null); // State to hold users data
+  // const [showUsers, setShowUsers] = useState(true);
+  // const [users, setUsers] = useState(null); // State to hold users data
 
   //global state
   // const displayMode = "light"; // or "dark"
 
 
   //fetch User data from database
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("/api/v1/get/users");
-      console.log("Users data: ", response.data);
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await axios.get("/api/v1/get/users");
+  //     console.log("Users data: ", response.data);
 
-      setUsers(response.data); // Update state with fetched users data
-    } catch (error) {
-      console.error("Error fetching users: ", error);
-      throw { error: error.message };
-    }finally {
-      console.log("Finally: fetchUsers function completed");
-    }
-  };
+  //     setUsers(response.data); // Update state with fetched users data
+  //   } catch (error) {
+  //     console.error("Error fetching users: ", error);
+  //     throw { error: error.message };
+  //   }finally {
+  //     console.log("Finally: fetchUsers function completed");
+  //   }
+  // };
 
   return (
     <>
@@ -65,23 +72,31 @@ export default function Home() {
       </Container>
       <Box height="60px" />
         <Container maxWidth="lg">
-          <Button onClick={() => setShowUsers(!showUsers)}>
+          {/* <Button onClick={() => setShowUsers(!showUsers)}>
             {showUsers ? "Hide Users" : "Show Users"}
-          </Button>
+          </Button> */}
           <Box height="20px" />
 
-          <Button onClick={() => fetchUsers()}>
+          {/* <Button onClick={() => fetchUsers()}>
             Fetch/Get Users
-          </Button>
+          </Button> */}
           <Box height="20px" />
           
           <Grid container spacing={4} direction="row" justifyContent="center">
           {
-            showUsers && users!=null ? users.response.map((user) => (
-              <Grid size={{ lg: 4, md: 4, sm: 6, xs: 12 }}>
-              <CustomCard Name={user.name} Description={user.email} Password={user.password} />
-              </Grid>
-            )) : <></>
+            users.loading === "loaded" ? (
+              users.users.map((user) => (
+                <Grid key={user._id} size={{ lg: 4, md: 4, sm: 6, xs: 12 }}>
+                  <CustomCard
+                    Name={user.name}
+                    Description={user.email}
+                    Password={user.password}
+                  />
+                </Grid>
+              ))
+            ) : (
+              <h2>Loading...</h2>
+            )
           }
           </Grid>
         </Container>

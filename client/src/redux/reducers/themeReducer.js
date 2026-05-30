@@ -11,7 +11,7 @@ const themeSlice = createSlice({
     },
     reducers: {
         getActiveTheme: (state) => {
-            const cookieData = cookies.getAll();
+            const cookieData = cookies.getAll(); // Get all cookies as an object
             state.activeTheme = cookieData?.activeTheme ?? "light"; // Can also be written as cookieData.activeTheme ? cookieData.activeTheme : "light"
             // state.activeTheme == state.activeTheme ?? "light";
         }, //ask: what the active theme is from the cookie and set it to the state, if there is no cookie, set it to lightd
@@ -19,7 +19,7 @@ const themeSlice = createSlice({
             state.activeTheme = state.activeTheme === "light" ? "dark" : "light";
             cookies.set("activeTheme", state.activeTheme, {
                 maxAge: 60 * 60 * 24, // Cookie expires in 1 day
-            });//ask: 
+            });// Set the cookie with the new theme value and an expiration time of 1 day
         }
     }
 });

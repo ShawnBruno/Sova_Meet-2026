@@ -9,8 +9,18 @@ import Link from 'next/link';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import { useDispatch, useSelector } from "react-redux";
+import { getActiveTheme, selectTheme } from "@/redux/reducers/themeReducer";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { toggleTheme } from "@/redux/reducers/themeReducer";
+
 
 export default function MyAppBar() {
+
+  const dispatch = useDispatch(); // Hook to access the Redux dispatch function
+  const currentTheme = useSelector(selectTheme).activeTheme; // Access the current theme from the Redux store
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -32,6 +42,16 @@ export default function MyAppBar() {
               </Button>
             </Link>
           </Typography>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={() => dispatch(toggleTheme())}
+          >
+            {currentTheme === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
           <Link href="/contact">
             <Button sx={{ ml: 1 }} color="inherit" variant="outlined" startIcon={<ContactSupportIcon />}>
               Contact Us

@@ -1,12 +1,33 @@
 import Head from "next/head";
 import Link from "next/link";
 import MyAppBar from "../components/MyAppBar";
-import { Container, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { Box, ThemeProvider } from "@mui/material";
 import { CustomCard } from "@/styles/mui/customComponents";
 import { lightTheme, darkTheme } from "@/styles/mui/theme";
+import { useState } from "react";
+import axios from "axios"; //npm install axios to make API calls to the backend
 
 export default function Home() {
+
+  const [showUsers, setShowUsers] = useState(true);
+  const [users, setUsers] = useState(null); // State to hold users data
+
+  //fetch User data from database
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/api/v1/get/users");
+      console.log("Users data: ", response.data);
+
+      setUsers(response.data); // Update state with fetched users data
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+      throw { error: error.message };
+    }finally {
+      console.log("Finally: fetchUsers function completed");
+    }
+  };
+
   return (
     <>
     <ThemeProvider theme={lightTheme}>
@@ -17,7 +38,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MyAppBar /><br />
-      <Container>
+      <Container align="center">
         <Grid justifyContent="center">
         <h1>SovaMeet</h1>
         <p>Welcome to SovaMeet! <br />Video Conference with AI power ASL Translation</p>
@@ -25,6 +46,28 @@ export default function Home() {
         <Link href="/dashboard">Dashboard</Link>
         </Grid>
       </Container>
+      <Box height="60px" />
+        <Container maxWidth="lg">
+          <Button onClick={() => setShowUsers(!showUsers)}>
+            {showUsers ? "Hide Users" : "Show Users"}
+          </Button>
+          <Box height="20px" />
+
+          <Button onClick={() => fetchUsers()}>
+            Fetch/Get Users
+          </Button>
+          <Box height="20px" />
+          
+          <Grid container spacing={4} direction="row" justifyContent="center">
+          {
+            showUsers && users!=null ? users.response.map((user) => (
+              <Grid size={{ lg: 4, md: 4, sm: 6, xs: 12 }}>
+              <CustomCard Name={user.name} Description={user.email} Password={user.password} />
+              </Grid>
+            )) : <></>
+          }
+          </Grid>
+        </Container>
     </ThemeProvider>
     </>
   );

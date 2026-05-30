@@ -2,6 +2,7 @@ import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@
 
 export const CustomCard = (props) => (
     <Card sx={{ maxWidth: 350, width: 350, height: 320, borderRadius: "24px", p: 2 }}>
+      {props.Image && (
       <CardMedia
         component="img"
         alt="green iguana"
@@ -9,6 +10,7 @@ export const CustomCard = (props) => (
         sx={{ objectFit: "contain", p: 2 }}
         image={props.Image}
       />
+      )}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {props.Name}
@@ -16,6 +18,11 @@ export const CustomCard = (props) => (
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {props.Description}
         </Typography>
+          {props.Password && (
+          <Typography variant="body2">
+          {props.Password}
+          </Typography>
+          )}
       </CardContent>
       <CardActions>
         <Button size="small">Learn More</Button>

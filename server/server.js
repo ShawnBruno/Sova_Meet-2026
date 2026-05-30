@@ -4,7 +4,7 @@ const express = require("express"); //npm i express
 const mongoose = require("mongoose"); //npm i mongoose
 require("dotenv").config(); //load environment variables from .env file
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 
 const app = express();
 app.use(express.json());

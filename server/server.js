@@ -16,11 +16,13 @@ mongoose.connect(process.env.MONGO_URI, {}).then(() => {
     console.log("Error connecting to MongoDB:", error);
 });
 
-//Models
+//Models (call our model)
 require("./models/User");
+require("./models/Report");
 
 
-// Importing routes
+// Importing routes (call our routes)
+require("./routes/authRouthes")(app); 
 require("./routes/meetingRoute")(app);
 
 app.listen(port, () => {

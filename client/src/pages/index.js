@@ -85,7 +85,7 @@ export default function Home() {
           <Grid container spacing={4} direction="row" justifyContent="center">
           {
             users.loading === "loaded" ? (
-              users.users.map((user) => (
+              users.user.map((user) => (
                 <Grid key={user._id} size={{ lg: 4, md: 4, sm: 6, xs: 12 }}>
                   <CustomCard
                     Name={user.name}
